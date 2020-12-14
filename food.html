@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <title>Food Calculator</title>
+  </head>
+  <body>
+
+    <div class="justify-content-center">
+
+        <label id="age-string"></label><br>
+
+        <div class="input-group">
+            <input type="number" class="form-control" value="5.0" step="0.1" placeholder="5.0kg" id="body-weight" onchange="calc()">
+            <input type="string" class="form-control" value="" placeholder="0g" id="hills-feed-total" disabled="true">
+            <input type="string" class="form-control" value="" placeholder="0g" id="hills-feed-2" disabled="true">
+            <input type="string" class="form-control" value="" placeholder="0g" id="hills-feed-3" disabled="true">
+            <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" onclick="calc()">Hills</button>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <input type="number" class="form-control" value="18" placeholder="18kg" id="future-weight" onchange="calcRC()">
+            <input type="string" class="form-control" value="" placeholder="0g" id="rc-feed-total" disabled="true">
+            <input type="string" class="form-control" value="" placeholder="0g" id="rc-feed-2" disabled="true">
+            <input type="string" class="form-control" value="" placeholder="0g" id="rc-feed-3" disabled="true">
+            <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" onclick="calcRC()">Royal</button>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col" id="ml">ml</th>
+                <th scope="col" id="mu">mu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row" id="kl">kl</th>
+                <td id="ll">mlkl</td>
+                <td id="ul">mukl</td>
+              </tr>
+              <tr>
+                <th scope="row" id="ku">ku</th>
+                <td id="lu">mlku</td>
+                <td id="uu">muku</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+
+    <script>
+        document.getElementById("age-string").innerText=((Date.now()-(new Date("08/25/2020")))/1000/3600/24).toFixed(1) + "d " + ((Date.now()-(new Date("08/25/2020")))/1000/3600/24/7).toFixed(1) + "w "+ ((Date.now()-(new Date("08/25/2020")))/1000/3600/24/365*12).toFixed(1) + "m";
+        //y = -0.3885x2 + 33.834x + 31.657
+        var calc = ()=>{
+            var ii = Number(document.getElementById("body-weight").value.replace("kg",""));
+            var feedg = (-0.3885*Math.pow(ii,2)+33.834*ii+31.657);
+            document.getElementById("hills-feed-total").value=feedg.toFixed(0) + "g";
+            document.getElementById("hills-feed-3").value= (feedg/3).toFixed(0) + "g x2";
+            document.getElementById("hills-feed-2").value= (feedg/2).toFixed(0) + "g x3";
+        };
+
+        mm=[2,3,4,5,6,7,8,9,10,11];
+        kk=[10,11,12,14,15,16,18,20,22,24];
+
+        dd=[[145,170,181,184,183,165,148,132,131,130],
+        [164,193,206,210,209,189,170,151,150,148],
+        [164,193,206,210,209,189,170,151,150,148],
+        [183,216,231,236,235,218,203,186,169,167],
+        [193,227,244,249,248,231,215,196,178,176],
+        [201,238,255,261,260,242,225,206,187,185],
+        [217,259,278,284,284,265,246,225,205,202],
+        [232,280,301,308,309,287,268,244,222,220],
+        [244,297,321,330,331,328,298,267,239,237],
+        [243,297,322,340,354,351,319,286,255,253]]
+
+        var calcRC=()=>{
+            k=document.getElementById("future-weight").value;
+            m=((Date.now()-(new Date("08/25/2020")))/1000/3600/24/365*12);
+            mli = 0;
+            kli = 0;
+            for(i=0;i<10;i++){
+               if(mm[i]>m){
+                   mli=i-1;
+                   break;
+               } 
+            }
+            for(i=0;i<10;i++){
+               if(kk[i]>k){
+                   kli=i-1;
+                   break;
+               } 
+            }
+
+            document.getElementById("ml").innerText=mm[mli];
+            document.getElementById("mu").innerText=mm[mli+1];
+
+            document.getElementById("kl").innerText=kk[kli];
+            document.getElementById("ku").innerText=kk[kli+1];
+
+            document.getElementById("ll").innerText=dd[kli][mli];
+            document.getElementById("lu").innerText=dd[kli+1][mli];
+            document.getElementById("ul").innerText=dd[kli][mli+1];
+            document.getElementById("uu").innerText=dd[kli+1][mli+1];
+
+            var diagScale = (dd[kli+1][mli+1]-dd[kli][mli])/(dd[kli+1][mli]+dd[kli][mli+1]-2*dd[kli][mli]);
+            var tt = dd[kli][mli] + ((k-kk[kli])/(kk[kli+1]-kk[kli])*(dd[kli+1][mli]-dd[kli][mli]) + (m-mm[mli])/(mm[mli+1]-mm[mli])*(dd[kli][mli+1]-dd[kli][mli])) * diagScale;
+
+            document.getElementById("rc-feed-total").value=tt.toFixed(0) + "g";
+            document.getElementById("rc-feed-3").value= (tt/3).toFixed(0) + "g x2";
+            document.getElementById("rc-feed-2").value= (tt/2).toFixed(0) + "g x3";
+        }
+
+        calc();
+        calcRC();
+
+    </script>
+  </body>
+</html>
