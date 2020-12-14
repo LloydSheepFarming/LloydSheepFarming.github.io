@@ -66,8 +66,8 @@
             var ii = Number(document.getElementById("body-weight").value.replace("kg",""));
             var feedg = (-0.3885*Math.pow(ii,2)+33.834*ii+31.657);
             document.getElementById("hills-feed-total").value=feedg.toFixed(0) + "g";
-            document.getElementById("hills-feed-3").value= (feedg/3).toFixed(0) + "g x2";
-            document.getElementById("hills-feed-2").value= (feedg/2).toFixed(0) + "g x3";
+            document.getElementById("hills-feed-3").value= (feedg/3).toFixed(0) + "g x3";
+            document.getElementById("hills-feed-2").value= (feedg/2).toFixed(0) + "g x2";
         };
 
         mm=[2,3,4,5,6,7,8,9,10,11];
@@ -117,8 +117,8 @@
             var tt = dd[kli][mli] + ((k-kk[kli])/(kk[kli+1]-kk[kli])*(dd[kli+1][mli]-dd[kli][mli]) + (m-mm[mli])/(mm[mli+1]-mm[mli])*(dd[kli][mli+1]-dd[kli][mli])) * diagScale;
 
             document.getElementById("rc-feed-total").value=tt.toFixed(0) + "g";
-            document.getElementById("rc-feed-3").value= (tt/3).toFixed(0) + "g x2";
-            document.getElementById("rc-feed-2").value= (tt/2).toFixed(0) + "g x3";
+            document.getElementById("rc-feed-3").value= (tt/3).toFixed(0) + "g x3";
+            document.getElementById("rc-feed-2").value= (tt/2).toFixed(0) + "g x2";
         }
 
         calc();
